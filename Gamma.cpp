@@ -1,15 +1,7 @@
 #include <math.h>
 #include "stdio.h"
-#include "stdafx.h"
- 
-//typedef unsigned char UNIT8; //用 8 位无符号数表示 0～255 之间的整数
-unsigned char g_GammaLUT[256];
-//全局数组：包含256个元素的gamma校正查找表
-//Buildtable()函数对0-255执行如下操作：
-//①归一化、预补偿、反归一化;
-//②将结果存入 gamma 查找表。
-//从公式得fPrecompensation=1/gamma
 
+unsigned char g_GammaLUT[256];
 void BuildTable(float fPrecompensation )
 {
 	int i;
@@ -21,7 +13,8 @@ void BuildTable(float fPrecompensation )
 		g_GammaLUT[i]=(unsigned char)(f*256-0.5F);  //unnormalization
 	}
 }
- 
+
+//
 int GammaCorrection(unsigned char *src, int iWidth, int iHeight, float fGamma, unsigned char *Dst)
 {
 	printf("GammaCorrection, Gamma=%f\n",fGamma);

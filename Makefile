@@ -9,11 +9,10 @@ OBJS = ImageProcess.o\
 main: $(OBJS) 
 %.o : %.c
     $(cc) -c $^ -o $@
-
-clean:
-    -rm -rf $(OBJS)
-
-
+	mkdir tmp
+	mv $(OBJS) ./tmp
+	mv 
+	
 .PHONY : clean
 clean:
 	rm tmp/*

@@ -2,6 +2,7 @@
 #include "string.h"
 #include "math.h"
 #include "wingdi.h"
+#include "windef.h"
 
 
 #define BYTE_PER_LINE(w,c)	(((((w))*(c)+31)/32)*4)
@@ -29,7 +30,7 @@ int save_bmp(unsigned char* buf,int width, int height, char* filepath)
 	bm.bfReserved1=0;
 	bm.bfReserved2=0;
 	bm.bfOffBits=sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER);
-	fwrite(&bm,sizeof(char),sizeof(BITMAPFILEHEADER),bmpfile);		//дλͼ�ļ�ͷ
+	fwrite(&bm,sizeof(char),sizeof(BITMAPFILEHEADER),bmpfile);		//
 	BITMAPINFOHEADER bmi;
 	bmi.biSize=sizeof(BITMAPINFOHEADER);
 	bmi.biWidth=m_nWidth;
@@ -42,11 +43,12 @@ int save_bmp(unsigned char* buf,int width, int height, char* filepath)
 	bmi.biYPelsPerMeter=0;
 	bmi.biClrUsed=0;
 	bmi.biClrImportant=0;
-	fwrite(&bmi,sizeof(char),sizeof(BITMAPINFOHEADER),bmpfile);	//дλͼ��Ϣ
+	fwrite(&bmi,sizeof(char),sizeof(BITMAPINFOHEADER),bmpfile);	//
 	//vertical flip
 
-	BYTE *p1,*p2,*pm;
-	pm=new BYTE[nByteWidth];
+	BYTE *p1,*p2;
+	BYTE pm[nByteWidth];
+	memset(pm, 0, sizeof(pm));
 	for(int y=0;y<m_nHeight/2;y++)
 	{
 		p1=buf+y*nByteWidth;
@@ -56,10 +58,9 @@ int save_bmp(unsigned char* buf,int width, int height, char* filepath)
 		memcpy(p2,pm,nByteWidth);
 	}
 	if (nByteWidth == 76) nByteWidth = 80;
-	fwrite(buf,sizeof(unsigned char),nByteWidth*m_nHeight,bmpfile);	//д����
+	fwrite(buf,sizeof(unsigned char),nByteWidth*m_nHeight,bmpfile);	//
 	fclose(bmpfile);
 
-	delete []pm;
 	return 0;
 }
 
@@ -81,12 +82,14 @@ int read_bmp(char* filepath, unsigned char* buf,int width,int height)
 	height = m_nHeight;
 	int	m_nBitCount = bmi.biBitCount;
 	int nByteWidth=BYTE_PER_LINE(m_nWidth,m_nBitCount);
-	if(buf==NULL)
-	   buf = new BYTE[nByteWidth*m_nHeight];
+
+	BYTE buf[nByteWidth*m_nHeight];
+	memset(buf, 0, sizeof(buf));
 	fread(buf,sizeof(char),nByteWidth*m_nHeight,bmpfile);
 	//vertical flip
 	BYTE *p1,*p2,*pm;
-	pm=new BYTE[nByteWidth];
+	BYTE pm[nByteWidth];
+	memset(pm, 0, sizeof(pm));
 	for (int y=0;y<m_nHeight/2;y++)
 	{
 		p1=buf+y*nByteWidth;
@@ -96,7 +99,6 @@ int read_bmp(char* filepath, unsigned char* buf,int width,int height)
 		memcpy(p2,pm,nByteWidth);
 	}
 	fclose(bmpfile);
-	delete [] pm;
 
 	return 0;
 }
