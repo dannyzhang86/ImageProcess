@@ -30,7 +30,7 @@ int save_bmp(unsigned char* buf,int width, int height, char* filepath)
 	bm.bfReserved1=0;
 	bm.bfReserved2=0;
 	bm.bfOffBits=sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER);
-	fwrite(&bm,sizeof(char),sizeof(BITMAPFILEHEADER),bmpfile);		//
+	fwrite(&bm,sizeof(char),sizeof(BITMAPFILEHEADER), bmpfile);		//
 	BITMAPINFOHEADER bmi;
 	bmi.biSize=sizeof(BITMAPINFOHEADER);
 	bmi.biWidth=m_nWidth;
@@ -43,7 +43,7 @@ int save_bmp(unsigned char* buf,int width, int height, char* filepath)
 	bmi.biYPelsPerMeter=0;
 	bmi.biClrUsed=0;
 	bmi.biClrImportant=0;
-	fwrite(&bmi,sizeof(char),sizeof(BITMAPINFOHEADER),bmpfile);	//
+	fwrite(&bmi,sizeof(char),sizeof(BITMAPINFOHEADER), bmpfile);	//
 	//vertical flip
 
 	BYTE *p1,*p2;
@@ -58,7 +58,7 @@ int save_bmp(unsigned char* buf,int width, int height, char* filepath)
 		memcpy(p2,pm,nByteWidth);
 	}
 	if (nByteWidth == 76) nByteWidth = 80;
-	fwrite(buf,sizeof(unsigned char),nByteWidth*m_nHeight,bmpfile);	//
+	fwrite(buf,sizeof(unsigned char), nByteWidth*m_nHeight, bmpfile);	//
 	fclose(bmpfile);
 
 	return 0;
@@ -83,22 +83,22 @@ int read_bmp(char* filepath, unsigned char* buf,int width,int height)
 	int	m_nBitCount = bmi.biBitCount;
 	int nByteWidth=BYTE_PER_LINE(m_nWidth,m_nBitCount);
 
-	BYTE buf[nByteWidth*m_nHeight];
-	memset(buf, 0, sizeof(buf));
-	fread(buf,sizeof(char),nByteWidth*m_nHeight,bmpfile);
+	memset(buf, 0, nByteWidth*m_nHeight);
+	fread(buf, sizeof(unsigned char), nByteWidth*m_nHeight, bmpfile);
+	
 	//vertical flip
-	BYTE *p1,*p2,*pm;
-	BYTE pm[nByteWidth];
-	memset(pm, 0, sizeof(pm));
-	for (int y=0;y<m_nHeight/2;y++)
-	{
-		p1=buf+y*nByteWidth;
-		p2=buf+(m_nHeight-y-1)*nByteWidth;
-		memcpy(pm,p1,nByteWidth);
-		memcpy(p1,p2,nByteWidth);
-		memcpy(p2,pm,nByteWidth);
-	}
-	fclose(bmpfile);
+	//BYTE *p1,*p2,*pm;
+	//BYTE pm[nByteWidth];
+	//memset(pm, 0, sizeof(pm));
+	//for (int y=0; y<m_nHeight/2; y++)
+	//{
+	//	p1=buf+y*nByteWidth;
+	//	p2=buf+(m_nHeight-y-1)*nByteWidth;
+	//	memcpy(pm,p1,nByteWidth);
+	//	memcpy(p1,p2,nByteWidth);
+	//	memcpy(p2,pm,nByteWidth);
+	//}
+	//fclose(bmpfile);
 
 	return 0;
 }
