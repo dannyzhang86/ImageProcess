@@ -1,8 +1,9 @@
 #include "stdio.h"
 #include "string.h"
 #include "math.h"
-#include "wingdi.h"
-#include "windef.h"
+
+#include "BMPOperation.h"
+#include "def.h"
 
 
 #define BYTE_PER_LINE(w,c)	(((((w))*(c)+31)/32)*4)
@@ -98,7 +99,7 @@ int read_bmp(char* filepath, unsigned char* buf,int width,int height)
 	//	memcpy(p1,p2,nByteWidth);
 	//	memcpy(p2,pm,nByteWidth);
 	//}
-	//fclose(bmpfile);
+	fclose(bmpfile);
 
 	return 0;
 }

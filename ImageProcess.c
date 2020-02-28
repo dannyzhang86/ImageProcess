@@ -2,9 +2,8 @@
 #include "stdlib.h"
 #include "string.h"
 #include "math.h"
-#include "wingdi.h"
-#include "windef.h"
 
+#include "def.h"
 #include "RAW2RGB24.h"
 #include "BMPOperation.h"
 #include "ImageProcess.h"
