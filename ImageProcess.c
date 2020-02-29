@@ -57,8 +57,10 @@ int main(int argc, char* argv[])
 	else {printf("Sequence=%s is wrong!\n", argv[4]);	return -1;}
 
 	//load RAW file
-	FILE *fp;	 
-	if((fp=fopen(argv[5],"rb")) !=0 )
+	FILE *fp;	
+	printf("%s\n",argv[5]); 
+	fp = fopen(argv[5],"rb");
+	if( fp == NULL )
 	{
 		printf("open file failed!\n");
 		return -1;
