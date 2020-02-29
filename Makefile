@@ -7,7 +7,7 @@ OBJS=ImageProcess.o\
 
 ImageProcess : $(OBJS)
 	mkdir out
-	cc -o ImageProcess $(OBJS)
+	cc -o ImageProcess $(OBJS) -lm
 	mv ImageProcess ./out
 	mv $(OBJS) ./out
 
