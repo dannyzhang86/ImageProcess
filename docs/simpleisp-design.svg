@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="900" viewBox="0 0 1680 900" role="img" aria-labelledby="title desc">
+  <title id="title">simpleisp design diagram</title>
+  <desc id="desc">Staged RAW to RGB image signal pipeline with current stages, data formats, configuration, and planned Phase 2 stages.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-dim" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1680" height="900" fill="#f7f9fc"/>
+
+  <style>
+    .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 30px; font-weight: 700; fill: #0f172a; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; fill: #64748b; }
+    .box-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; font-weight: 600; fill: #0f172a; }
+    .box-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 11px; fill: #475569; }
+    .box-mono { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 11px; fill: #334155; }
+    .fmt { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 10.5px; fill: #64748b; }
+    .section { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 600; fill: #475569; }
+    .card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 600; fill: #334155; }
+    .card-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 10.5px; fill: #64748b; }
+    .legend { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; fill: #64748b; }
+  </style>
+
+  <text class="title" x="90" y="62">simpleisp — staged RAW → RGB pipeline</text>
+  <text class="subtitle" x="90" y="90">Phase 0+1 · small C11 library, testable stages, no external dependencies</text>
+
+  <!-- legend -->
+  <line x1="1310" y1="68" x2="1350" y2="68" stroke="#475569" stroke-width="2"/>
+  <text class="legend" x="1360" y="72">implemented</text>
+  <line x1="1310" y1="92" x2="1350" y2="92" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text class="legend" x="1360" y="96">planned (Phase 2)</text>
+
+  <!-- pipeline -->
+  <g filter="url(#shadow)">
+    <rect x="90"  y="150" width="180" height="120" rx="14" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.5"/>
+    <rect x="310" y="150" width="180" height="120" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+    <rect x="530" y="150" width="180" height="120" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+    <rect x="750" y="150" width="180" height="120" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+    <rect x="970" y="150" width="180" height="120" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+    <rect x="1190" y="150" width="180" height="120" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="1410" y="150" width="180" height="120" rx="14" fill="#eef2f7" stroke="#94a3b8" stroke-width="1.5"/>
+  </g>
+
+  <text class="box-title" x="180" y="196" text-anchor="middle">RAW file</text>
+  <text class="box-sub" x="180" y="222" text-anchor="middle">unpacked little-endian</text>
+  <text class="box-sub" x="180" y="240" text-anchor="middle">RAW8 … RAW16</text>
+
+  <text class="box-mono" x="400" y="190" text-anchor="middle">raw_load()</text>
+  <text class="box-sub" x="400" y="216" text-anchor="middle">io/raw.c</text>
+  <text class="box-sub" x="400" y="238" text-anchor="middle">size + format check</text>
+
+  <text class="box-mono" x="620" y="190" text-anchor="middle">isp_unpack()</text>
+  <text class="box-sub" x="620" y="216" text-anchor="middle">black level → 16-bit</text>
+  <text class="box-sub" x="620" y="238" text-anchor="middle">(v − black) · 65535 / range</text>
+
+  <text class="box-mono" x="840" y="190" text-anchor="middle">isp_demosaic()</text>
+  <text class="box-sub" x="840" y="216" text-anchor="middle">bilinear Bayer</text>
+  <text class="box-sub" x="840" y="238" text-anchor="middle">BGGR · RGGB · GBRG · GRBG</text>
+
+  <text class="box-mono" x="1060" y="190" text-anchor="middle">isp_gamma()</text>
+  <text class="box-sub" x="1060" y="216" text-anchor="middle">65536-entry LUT</text>
+  <text class="box-sub" x="1060" y="238" text-anchor="middle">16-bit linear → 8-bit</text>
+
+  <text class="box-mono" x="1280" y="190" text-anchor="middle">bmp_write()</text>
+  <text class="box-mono" x="1280" y="210" text-anchor="middle">ppm_write()</text>
+  <text class="box-sub" x="1280" y="234" text-anchor="middle">io/bmp.c · io/ppm.c</text>
+  <text class="box-sub" x="1280" y="252" text-anchor="middle">headers, stride, padding</text>
+
+  <text class="box-title" x="1500" y="196" text-anchor="middle">RGB image</text>
+  <text class="box-sub" x="1500" y="222" text-anchor="middle">24-bit BMP</text>
+  <text class="box-sub" x="1500" y="240" text-anchor="middle">binary PPM (P6)</text>
+
+  <!-- arrows -->
+  <line x1="272" y1="210" x2="304" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="492" y1="210" x2="524" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="712" y1="210" x2="744" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="932" y1="210" x2="964" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1152" y1="210" x2="1184" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1372" y1="210" x2="1404" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- data format labels -->
+  <text class="fmt" x="290" y="292" text-anchor="middle">file bytes</text>
+  <text class="fmt" x="510" y="292" text-anchor="middle">BAYER16</text>
+  <text class="fmt" x="730" y="292" text-anchor="middle">BAYER16</text>
+  <text class="fmt" x="950" y="292" text-anchor="middle">RGB16</text>
+  <text class="fmt" x="1170" y="292" text-anchor="middle">RGB8</text>
+  <text class="fmt" x="1390" y="292" text-anchor="middle">BMP / PPM</text>
+
+  <!-- isp_process bracket -->
+  <path d="M 530 306 L 530 322 L 1150 322 L 1150 306" fill="none" stroke="#94a3b8" stroke-width="1.4"/>
+  <text class="box-sub" x="1150" y="345" text-anchor="end">isp_process() · src/isp/isp.c — validates config, owns stage order</text>
+
+  <!-- configuration + CLI + errors -->
+  <g filter="url(#shadow)">
+    <rect x="90" y="395" width="360" height="100" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="490" y="395" width="620" height="100" rx="12" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5"/>
+    <rect x="1150" y="395" width="440" height="100" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  </g>
+
+  <text class="box-title" x="110" y="425">main.c — CLI</text>
+  <text class="box-sub" x="110" y="449">flags and legacy positional form</text>
+  <text class="box-sub" x="110" y="468">loads RAW · calls isp_process() · writes output</text>
+
+  <text class="box-mono" x="510" y="425">isp_config_t</text>
+  <text class="box-sub" x="510" y="450">black_level · white_level · cfa · gamma</text>
+  <text class="box-sub" x="510" y="470">stages independently callable and unit-testable</text>
+
+  <text class="box-title" x="1170" y="425">core/errors</text>
+  <text class="box-sub" x="1170" y="449">isp_strerror() · isp_last_error()</text>
+  <text class="box-sub" x="1170" y="468">no printing from library internals</text>
+
+  <line x1="452" y1="445" x2="484" y2="445" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="620" y1="393" x2="620" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="fmt" x="632" y="380">config</text>
+
+  <!-- Phase 2 planned -->
+  <text class="section" x="90" y="552">Phase 2 — planned stages</text>
+
+  <g filter="url(#shadow)">
+    <rect x="90" y="570" width="470" height="92" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <rect x="590" y="570" width="380" height="92" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <rect x="1000" y="570" width="590" height="92" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="7 5"/>
+  </g>
+
+  <text class="card-title" x="110" y="598">DPC · LSC · AWB</text>
+  <text class="card-sub" x="110" y="620">insert before demosaic</text>
+  <text class="card-sub" x="110" y="638">defect correction · lens shading · gray-world white balance</text>
+
+  <text class="card-title" x="610" y="598">CCM</text>
+  <text class="card-sub" x="610" y="620">insert after demosaic, in linear light</text>
+  <text class="card-sub" x="610" y="638">3×3 Q2.10, calibrated on the ColorChecker</text>
+
+  <text class="card-title" x="1020" y="598">Sharpen · dither</text>
+  <text class="card-sub" x="1020" y="620">after gamma, before 8-bit output</text>
+  <text class="card-sub" x="1020" y="638">unsharp mask on Y · ordered dither for 16 → 8-bit</text>
+
+  <!-- core data contract + verification -->
+  <line x1="90" y1="690" x2="1590" y2="690" stroke="#e2e8f0" stroke-width="1"/>
+
+  <rect x="90" y="710" width="760" height="110" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+  <rect x="880" y="710" width="710" height="110" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.4"/>
+
+  <text class="box-title" x="110" y="738">Core data contract</text>
+  <text class="box-mono" x="110" y="762">image_t { uint8_t *data; int width, height; size_t stride; pixel_format_t format; }</text>
+  <text class="box-sub" x="110" y="788">PIX_BAYER16 · 2 B/px        PIX_RGB16 · 6 B/px        PIX_RGB8 · 3 B/px</text>
+
+  <text class="box-title" x="900" y="738">Verification</text>
+  <text class="box-sub" x="900" y="762">4 CFA phases · demosaic matched against a NumPy reference</text>
+  <text class="box-sub" x="900" y="784">BMP byte layout · PPM · error paths · ASan/UBSan clean</text>
+
+  <text class="legend" x="90" y="862">Phase 1 · C11 · no external dependencies</text>
+  <text class="legend" x="1590" y="862" text-anchor="end">make test   ·   make sanitize   ·   make compiledb</text>
+</svg>

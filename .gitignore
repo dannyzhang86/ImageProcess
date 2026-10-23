@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+simpleisp
+
+# Build and test artefacts
+build/
+
+test.bmp
+*.ppm
+compile_commands.json
+compile_commands.json.tmp
+
+# Editor and language-server caches
+.cache/
+.vscode/
